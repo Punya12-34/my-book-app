@@ -34,15 +34,19 @@ export default function RouteGuard({ children }) {
   }, []);
 
   async function authCheck(url) {
-    await updateAtom();
-    const path = url.split('?')[0];
-    if (!isAuthenticated() && !PUBLIC_PATHS.includes(path)) {
-      setAuthorized(false);
+  const path = url.split('?')[0];
+  if (!isAuthenticated()) {
+    setAuthorized(false);
+    if (!PUBLIC_PATHS.includes(path)) {
       router.push('/login');
     } else {
       setAuthorized(true);
     }
+  } else {
+    await updateAtom();
+    setAuthorized(true);
   }
+}
 
   return authorized ? children : null;
 }
