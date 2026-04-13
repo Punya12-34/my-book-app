@@ -1,59 +1,41 @@
-/********************************************************************************
-* BTI425 – Assignment 02
-*
-* I declare that this assignment is my own work in accordance with Seneca's
-* Academic Integrity Policy:
-*
-* https://www.senecapolytechnic.ca/about/policies/academic-integrity-policy.html
-*
-* Name: Punya Pratishtha Kalia Student ID: 181480211 Date: 2026.03.15
-*
-********************************************************************************/
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAtom } from "jotai";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { favouritesAtom } from "@/store";
+import { addToFavourites, removeFromFavourites } from "@/lib/userData";
 
 export default function BookDetails({ book, workId, showFavouriteBtn = true }) {
   const [favouritesList, setFavouritesList] = useAtom(favouritesAtom);
+  const [showAdded, setShowAdded] = useState(false);
 
-  const [showAdded, setShowAdded] = useState(
-    favouritesList.includes(workId)
-  );
+  useEffect(() => {
+    setShowAdded(favouritesList?.includes(workId));
+  }, [favouritesList]);
 
-  function favouritesClicked() {
+  async function favouritesClicked() {
     if (showAdded) {
-      // Remove from favourites
-      setFavouritesList((current) => current.filter((fav) => fav !== workId));
-      setShowAdded(false);
+      setFavouritesList(await removeFromFavourites(workId));
     } else {
-      // Add to favourites
-      setFavouritesList((current) => [...current, workId]);
-      setShowAdded(true);
+      setFavouritesList(await addToFavourites(workId));
     }
   }
 
   return (
     <Container>
       <Row>
-        {/* Left column: cover image */}
         <Col lg="4">
           <img
             onError={(event) => {
               event.target.onerror = null;
-              event.target.src =
-                "https://placehold.co/400x600?text=Cover+Not+Available";
+              event.target.src = "https://placehold.co/400x600?text=Cover+Not+Available";
             }}
             className="img-fluid w-100"
             src={`https://covers.openlibrary.org/b/id/${book?.covers?.[0]}-L.jpg`}
             alt="Cover Image"
           />
-          <br />
-          <br />
+          <br /><br />
         </Col>
 
-        {/* Right column: book info */}
         <Col lg="8">
           <h3>{book?.title}</h3>
 
@@ -71,8 +53,7 @@ export default function BookDetails({ book, workId, showFavouriteBtn = true }) {
             <>
               <h5>Characters</h5>
               {book.subject_people.join(", ")}
-              <br />
-              <br />
+              <br /><br />
             </>
           )}
 
@@ -80,8 +61,7 @@ export default function BookDetails({ book, workId, showFavouriteBtn = true }) {
             <>
               <h5>Settings</h5>
               {book.subject_places.join(", ")}
-              <br />
-              <br />
+              <br /><br />
             </>
           )}
 
@@ -90,9 +70,7 @@ export default function BookDetails({ book, workId, showFavouriteBtn = true }) {
               <h5>More Information</h5>
               {book.links.map((link, index) => (
                 <span key={index}>
-                  <a href={link.url} target="_blank" rel="noreferrer">
-                    {link.title}
-                  </a>
+                  <a href={link.url} target="_blank" rel="noreferrer">{link.title}</a>
                   <br />
                 </span>
               ))}
