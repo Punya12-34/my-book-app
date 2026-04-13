@@ -8,7 +8,7 @@
 *
 * Name: Punya Pratishtha Kalia Student ID: 181480211 Date: 2026.04.12
 *
-* Vercel App (Deployed) Link: https://my-book-app-[your-url].vercel.app
+* Vercel App (Deployed) Link: https://my-book-app-lovat-phi.vercel.app
 *
 ********************************************************************************/
 

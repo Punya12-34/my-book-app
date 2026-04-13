@@ -1,15 +1,3 @@
-/********************************************************************************
-* BTI425 – Assignment 02
-*
-* I declare that this assignment is my own work in accordance with Seneca's
-* Academic Integrity Policy:
-*
-* https://www.senecapolytechnic.ca/about/policies/academic-integrity-policy.html
-*
-* Name: Punya Pratishtha Kalia Student ID: 181480211 Date: 2026.03.15
-*
-********************************************************************************/
-
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import BookDetails from "@/components/BookDetails";
